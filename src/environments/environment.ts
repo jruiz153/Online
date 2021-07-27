@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  url: 'https://localhost:44372/api/envia',
+  url_olc: 'https://localhost:44372/api/olc'
 };
 
 /*

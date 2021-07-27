@@ -1,0 +1,531 @@
+<form focusInvalidInput [formGroup]="forma" (ngSubmit)="capturarGuia()">
+
+    <div class="form-horizontal" ng-controller="CapturarGuia">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Cuenta:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-id-card icon"></i>
+                        <select formControlName="drpCuentas" name="drpCuentas" id="drpCuentas" class="input-field" required>
+                        <option value="" selected="selected">--Seleccione--</option>
+                        <option *ngFor="let cuenta of cuentas" value="{{ cuenta.CuentaSin }}"> {{ cuenta.Cuenta }}</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Forma pago:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-money-bill-alt icon"></i>
+                        <!-- <select id="drpServicio" name="drpServicio" ng-model="captura.fp" class="input-field">
+                        <option value="" selected="selected">--Seleccione--</option>
+                        <option ng-repeat="option in captura.formas_pago" value="{{option.Cod_FormaPago}}">{{option.Des_FormaPago}}</option>
+                    </select> -->
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Servicio:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-cube icon"></i>
+                        <!-- <select name="servicio" ng-model="captura.servicio" class="input-field">
+                        @*ng-change="cargarServiciosDescuento()"*@
+                        <option value="" selected="selected">--Seleccione--</option>
+                        <option ng-repeat="option in captura.servicios" value="{{option.Cod_Servicio}}">{{option.Nom_Servicio}}</option>
+                    </select> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-2">
+                <h3 style="color:#D4001B">Remitente</h3>
+            </div>
+            <div class="col-lg-10" style="text-align:left">
+                <span ng-show="isViewLoadingI" class="viewLoading">
+                <img src="~/Imagenes/ng-loader.gif" width="25" height="25" />
+            </span>
+            </div>
+        </div>
+        <input type="hidden" id="hdfError" name="hdfError" formControlName="hdfError" value="0" />
+        <input type="hidden" id="txtNumCliente" name="txtNumCliente" formControlName="txtNumCliente" value="0" />
+
+        <input type="hidden" id="hdfGuiaCortesia" name="hdfGuiaCortesia" ng-model="captura.cortesia" value="0" />
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-user icon"></i>
+                        <input type="text" class="input-field" id="txtNomRemitente" name="txtNomRemitente" placeholder="Nombre remitente" ng-model="captura.nom_remitente">
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Ciudad:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-city icon"></i>
+                        <input type="text" id="Nom_CiudadO" name="Nom_CiudadO" class="input-field" placeholder="Ciudad origen" ng-model="captura.origen">
+                        <input type="hidden" id="Cod_CiudadOSelected" name="Cod_CiudadOSelected" ng-model="captura.origenid" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Dirección:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-map-marker-alt icon"></i>
+                        <input type="text" class="input-field" placeholder="Direccion remitente" ng-model="captura.dir_remitente">
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Telefono:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-phone icon"></i>
+                        <input type="text" class="input-field" placeholder="Telefono remitente" ng-model="captura.tel_remitente">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Email:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-at icon"></i>
+                        <input type="text" class="input-field" id="txtEmailRemitente" name="txtEmailRemitente" placeholder="Email remitente" ng-model="captura.email_remitente">
+                        <input type="hidden" ng-model="captura.cons_remitente">
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Identificación:</label>
+                    <div class="col-sm-4 col-md-2 col-lg-2 input-icons">
+                        <i class="fas fa-id-card icon"></i>
+                        <input type="text" class="input-field" id="txtCedRemitente" name="txtCedRemitente" ng-model="captura.ced_remitente" placeholder="Identificación" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Codigo postal:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-bullseye icon"></i>
+                        <input type="text" class="input-field" id="txtCodigoPostal" name="txtCodigoPostal" placeholder="Codigo postal" ng-model="captura.codigo_postal_remitente">
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Centro costo:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-user icon"></i>
+                        <input type="hidden" id="hdfCodCC" name="hdfCodCC" ng-model="captura.cod_cc" />
+                        <input type="text" id="txtNomCC" name="txtNomCC" placeholder="Centro de costo" class="input-field" ng-model="captura.nom_cc">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h3 style="color:#D4001B">Destinatario</h3>
+        <div class="panel panel-default">
+            @*
+            <div class="panel-heading"><b>Destinatario</b></div>*@
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-user icon"></i>
+                        <input type="text" class="input-field" id="txtNomDestinatario" name="txtNomDestinatario" placeholder="Nombre destinatario" ng-model="captura.nom_destinatario">
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Ciudad:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-city icon"></i>
+                        <input type="text" id="Nom_CiudadD" name="Nom_CiudadD" class="input-field" placeholder="Ciudad destino..." ng-model="captura.destino">
+                        <input type="hidden" id="Cod_CiudadDSelected" name="Cod_CiudadDSelected" ng-model="captura.destinoid" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Dirección:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-map-marker-alt icon"></i>
+                        <input type="text" id="txtDirDestinatario" name="txtDirDestinatario" class="input-field" placeholder="Direccion destinatario" ng-model="captura.dir_destinatario">
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Telefono:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-phone icon"></i>
+                        <input type="text" id="txtTelDestinatario" name="txtTelDestinatario" class="input-field" placeholder="Telefono destinatario" ng-model="captura.tel_destinatario">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Codigo postal:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-at icon"></i>
+                        <input type="text" class="input-field" placeholder="Codigo postal" ng-model="captura.codigo_postal_destinatario">
+                        <input type="hidden" class="input-field" id="txtConsDestinatario" name="txtConsDestinatario" ng-model="captura.cons_destinatario">
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Identificación:</label>
+                    <div class="col-sm-4 input-icons">
+                        <i class="fas fa-id-card icon"></i>
+                        <input type="text" id="txtCedDestinatario" name="txtCedDestinatario" class="input-field" placeholder="Identificacion" ng-model="captura.ced_destinatario">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label"><b>NO</b> recibe Sabado:</label>
+                    <div class="col-sm-4">
+                        <div class="checkbox checkbox-styled" style="padding-top:0px; padding-left:0px">
+                            <label>
+                            <input type="checkbox" value="1" ng-model="captura.no_sabado">
+                            <span></span>
+                        </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 col-md-6 col-lg-6" style="padding-left:12px; padding-right:10px">
+                <h3 style="color:#D4001B">Contenido</h3>
+                <div class="panel panel-default">
+                    @*
+                    <div class="panel-heading"><b>Contenido</b></div>*@
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-4 control-label">Dice contener:</label>
+                            <div class="col-sm-8 input-icons">
+                                <i class="fas fa-box-open icon"></i>
+                                <input type="hidden" id="hdfCodDescription" name="hdfCodDescription" formControlName="hdfCodDescription" />
+                                <input type="text" id="txtDiceContener" name="txtDiceContener" placeholder="Contenido" class="input-field" ng-model="captura.dice_contener">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-4 control-label">Notas guia:</label>
+                            <div class="col-sm-8 input-icons">
+                                <i class="fas fa-sticky-note icon"></i>
+                                <input type="text" class="input-field" placeholder="Notas en guía" ng-model="captura.notas">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="captura.servicio==4">
+                            <label for="inputEmail3" class="col-sm-4 control-label">Documentos:</label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="Doc 1" ng-model="captura.doc1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="Doc 2" ng-model="captura.doc2">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" placeholder="Doc 3" ng-model="captura.doc3">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-4 control-label">Valor declarado:</label>
+                            <div class="col-sm-8 input-icons">
+                                <i class="fas fa-money-bill-alt icon"></i>
+                                <input type="text" class="input-field" placeholder="$$" style="text-align:right; font-weight:bold" ng-model="captura.valor_declarado">
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="(captura.servicio==1 || captura.servicio==4 || captura.servicio==10) && (captura.servicio!=12 && captura.servicio!=13)">
+                            <label for="inputEmail3" class="col-sm-4 control-label">Documentos:</label>
+                            <div class="col-sm-4">
+                                <div class="radio radio-styled">
+                                    <label>
+                                    <input type="radio" ng-model="captura.documentos" value="1" ng-checked="captura.servicio==1">
+                                    <span>Si</span>
+                                </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="radio radio-styled">
+                                    <label>
+                                    <input type="radio" ng-model="captura.documentos" value="0">
+                                    <span>No</span>
+                                </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="col-sm-2"></div>
+                                <div class="checkbox checkbox-styled col-sm-4" ng-if="captura.servicio==7">
+                                    <label>
+                                    <input type="checkbox" value="0" ng-model="captura.cartas">
+                                    <span>Docs/cartas(Int)</span>
+                                </label>
+                                </div>
+                                <div class="checkbox checkbox-styled col-sm-3" ng-if="captura.documentos==0 || captura.servicio==2 || captura.servicio==3 || captura.servicio==4 || captura.servicio==12 || captura.servicio==13">
+                                    <label>
+                                    <input type="checkbox" value="1" ng-model="captura.bolsa">
+                                    <span>Bolsa</span>
+                                </label>
+                                </div>
+                                <div class="checkbox checkbox-styled col-sm-3" ng-if="captura.servicio!=null && captura.servicio!=1 && captura.servicio!=7">
+                                    <label>
+                                    <input type="checkbox" value="2" ng-model="captura.cartaporte">
+                                    <span>Cartaporte</span>
+                                </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="captura.bolsa==true">
+                            <div class="col-sm-12">
+                                <div class="col-sm-4 control-label">Número Bolsa:</div>
+                                <div class="col-sm-8"><input type="text" ng-model="captura.numero_bolsa"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>@*panel-default*@
+            </div>@*col-sm-6*@
+            <div class="col-sm-12 col-md-6 col-lg-6" style="padding-left:10px; padding-right:10px">
+                <h3 style="color:#D4001B" ng-if="(captura.servicio==1 || captura.servicio==4 || captura.servicio==7 || captura.servicio==10) && (captura.servicio!=12 && captura.servicio!=13)">Informacion documentos</h3>
+                <div class="panel panel-default" ng-if="(captura.servicio==1 || captura.servicio==4 || captura.servicio==7 || captura.servicio==10) && (captura.servicio!=12 && captura.servicio!=13)">
+                    @*
+                    <div class="panel-heading"><b>Informacion documentos</b></div>*@
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <tr align="center" style="font-weight:bold">
+                                <td>Unidades</td>
+                                <td>Peso</td>
+                                <td>Volumen</td>
+                            </tr>
+                            <tr align="center">
+                                <td><input type="number" ng-model="captura.unidades_doc" style="width:56px"></td>
+                                <td><input type="number" ng-model="captura.peso_doc" style="width:56px"></td>
+                                <td><input type="number" ng-model="captura.volumen_doc" style="width:56px"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <h3 style="color:#D4001B" ng-if="(captura.servicio==2 || captura.servicio==3) || (captura.servicio==12 || captura.servicio==13)">Información mercancía</h3>
+                <div class="panel panel-default" ng-if="(captura.servicio==2 || captura.servicio==3) || (captura.servicio==12 || captura.servicio==13)">
+                    @*
+                    <div class="panel-heading"><b>Cantidades mercancia</b></div>*@
+                    <div class="panel-body" style="width:100%; overflow: scroll;">
+                        <table class=" table table-bordered table-hover">
+                            <tr align="center" style="font-weight:bold">
+                                <td>#</td>
+                                <td>Unds</td>
+                                <td>Peso Kg</td>
+                                <td>Alto</td>
+                                <td>Largo</td>
+                                <td>Ancho</td>
+                                <td>Volumen</td>
+                                <td>Cobrar</td>
+                            </tr>
+                            <tr align="center">
+                                <td></td>
+                                <td><input type="text" ng-model="captura.unidades" style="width:56px; text-align:center" maxlength="4"></td>
+                                <td><input type="text" ng-model="captura.peso" style="width:56px; text-align:center" maxlength="4"></td>
+                                <td><input type="text" ng-model="captura.alto" placeholder="cms" style="width:56px; text-align:center" maxlength="4"></td>
+                                <td><input type="text" ng-model="captura.largo" placeholder="cms" style="width:56px; text-align:center" maxlength="4"></td>
+                                <td><input type="text" ng-model="captura.ancho" placeholder="cms" style="width:56px; text-align:center" maxlength="4"></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="button" ng-click="agregarCubicacion()" value="+" class="btn btn-primary"></td>@*<a><i class="fa fa-plus" style="padding:0px"></i></a>*@
+                            </tr>
+                            <<!-- tr *ngFor="c in captura.cubicacion" ng-if="$index > 0" align="center">
+                                <td><b>{{ $index }}</b></td>
+                                <td>{{ c.unidades }}</td>
+                                <td>{{ c.peso }}</td>
+                                <td>{{ c.alto }}</td>
+                                <td>{{ c.largo }}</td>
+                                <td>{{ c.ancho }}</td>
+                                <td>{{ c.volumen_k }}</td>
+                                <td>{{ c.peso_kobrar }}</td>
+                                <td ng-click="eliminarCubicacion($index)"><a><i class="fa fa-trash" style="padding:0px"></i></a></td>
+                                </tr>
+                                <tr align="center" style="font-weight:bold" class="danger" ng-if="captura.cubicacion.length > 1">
+                                    <td></td>
+                                    <td>{{ total_uni }}</td>
+                                    <td>{{ total_peso }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ total_volumen_k }}</td>
+                                    <td>{{ total_cobrar }}</td>
+                                </tr> -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <span ng-show="isLiquidando" class="viewLoading">
+        <img src="~/Imagenes/ng-loader.gif" /> <b>Liquidando envío</b>...
+    </span>
+
+        <span ng-show="isGenerando" class="viewLoading">
+        <img src="~/Imagenes/ng-loader.gif" /> <b>Generando guía</b>...
+    </span>
+
+        <span ng-show="isGenerandoGuias" class="viewLoading">
+        <img src="~/Imagenes/ng-loader.gif" /> <b>Generando guías</b>...
+    </span>
+
+        <h3 style="color:#D4001B" ng-if="captura.activa_descuento==1">Destinatarios para descuento</h3>
+        <div class="panel panel-default" ng-if="captura.activa_descuento==1">
+            <div class="panel-body">
+                <div class="col-sm-12" style="width:100%;overflow: scroll;">
+                    <table class="table table-hover table-bordered" style="width:1600px; height:100%">
+                        <tr style="text-align:center; font-weight:bold; border-bottom:6px; background-color:#f5f5f5">
+                            <td width="1%"></td>
+                            <td>Destinatario</td>
+                            <td>Direccion</td>
+                            <td>Telefono</td>
+                            <td>Servicio</td>
+                            <td>Ciudad Destino</td>
+                            <td>Unidades</td>
+                            <td>Peso</td>
+                            <td>Volumen</td>
+                            <td>$ Declarado</td>
+                            <td>$Flete</td>
+                            <td>$Flete V.</td>
+                            <td>$ Otros</td>
+                            <td>$ Total</td>
+
+                            <td class="danger">$Flete des.</td>
+                            <td class="danger">$Flete V. des.</td>
+                            <td class="danger">$ Otros des.</td>
+                            <td class="danger">$ Total des.</td>
+                            <td>Cubrimiento</td>
+                        </tr>
+                        <!-- <tr align="center" ng-repeat="e in captura.info_envios" ng-if="$index > 0">
+                        <td ng-click="eliminarEnvio($index)"><a><i class="fa fa-trash" style="padding:0px"></i></a></td>
+                        <td>{{ e.nom_destinatario }}</td>
+                        <td>{{ e.dir_destinatario }}</td>
+                        <td>{{ e.tel_destinatario }}</td>
+                        <td>{{ e.cod_servicio }}</td>
+                        <td>{{ e.ciu_destino }}</td>
+                        <td>{{ e.unidades }}</td>
+                        <td>{{ e.peso }}</td>
+                        <td>{{ e.volumen }}</td>
+                        <td>{{ e.declarado | currency : "" : 0}}</td>
+
+                        <td>{{ e.valor_flete | currency : "" : 0}}</td>
+                        <td>{{ e.valor_costom | currency : "" : 0}}</td>
+                        <td>{{ e.valor_otros | currency : "" : 0}}</td>
+                        <td>{{ e.valor_total | currency : "" : 0}}</td>
+                        <td>{{ e.valor_fleted | currency : "" : 0}}</td>
+                        <td>{{ e.valor_costomd | currency : "" : 0}}</td>
+                        <td>{{ e.valor_otrosd | currency : "" : 0}}</td>
+                        <td>{{ e.valor_totald | currency : "" : 0}}</td>
+                        <td><b>Nacional</b></td>
+                    </tr> -->
+                    </table>
+                    <br />
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-danger" ng-if="captura.activa_descuento==1 && captura.info_envios.length > 1">
+            <div class="form-group" style="font-weight:bold">
+                <label for="inputEmail3" class="col-sm-2 control-label">Total Fletes:</label>
+                <!-- <div class="col-sm-2 control-label" style="text-align:left"><b class="badge">{{ total_fletesd | currency : "" : 0}}</b></div> -->
+                <label for="inputEmail3" class="col-sm-2 control-label">% Descuento Autorizado:</label>
+                <div class="col-sm-2 control-label" style="text-align:left">
+                    <!-- <select name="descuento" ng-model="captura.descuento" class="input-field" ng-change="calcularDescuentos()">
+                    <option value="" selected="selected">--Seleccione--</option>
+                    <option ng-repeat="d in captura.descuentos" value="{{d.Valor}}">{{d.Valor}}</option>
+                </select> -->
+
+                </div>
+                <label for="inputEmail3" class="col-sm-2 control-label">Nuevo total Fletes:</label>
+                <!-- <div class="col-sm-2 control-label" style="text-align:left"><b class="badge">{{ total_totald | currency : "" : 0}}</b></div> -->
+            </div>
+        </div>
+
+        <div class="form-group" ng-if="captura.activa_descuento!=1">
+            <div class="col-sm-4 input-icons"><i class="fas fa-calculator icon-button"></i><input type="button" value="Liquidar" ng-click="cotizar()" class="btn btn-primary input-field" style="text-transform:uppercase" /></div>
+            <div class="col-sm-4 input-icons"><i class="fas fa-check icon-button"></i><input type="button" name="action" ng-click="capturar()" value="Generar guía" class="btn btn-primary input-field" ng-disabled="isDisabledBotonGenerar" style="text-transform:uppercase" /></div>
+            <div class="col-sm-4 input-icons"><i class="fas fa-file icon-button"></i><input type="reset" value="Nuevo" class="btn btn-primary input-field" style="text-transform:uppercase" ng-click="volver()" /></div>
+        </div>
+
+        <div class="form-group" ng-if="captura.activa_descuento==1">
+            <div class="col-sm-4"><input type="button" value="Adicionar envio" ng-click="adicionarEnvio()" class="btn btn-primary" style="text-transform:uppercase" /></div>
+            <div class="col-sm-4"><input type="button" value="Nuevo" name="action" ng-click="capturar()" class="btn btn-primary" style="text-transform:uppercase" /></div>
+            <div class="col-sm-4"><input type="button" value="Finalizar envios" ng-disabled="isDisabledEnvios" class="btn btn-primary" style="text-transform:uppercase" ng-click="generarEnviosVarios()" /></div>
+        </div>
+
+        @*Modals*@
+        <div id="myModal" class="modal fade" role="dialog" style="visibility:visible;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background:#bf0020; color:#fff; font-size:16px">
+                        <b>Liquidación envío</b>
+                        <button type="button" class="close" style="color:#fff" data-dismiss="modal">&times;</button><br />
+                    </div>
+                    <div id="myModalContentPopUp" style="font-size:14px; text-align:center">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="myModalG" class="modal fade" role="dialog" style="visibility:visible;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background:#bf0020; color:#fff; font-size:18px;">
+                        <b>Generación guía</b>
+                        <button type="button" class="close" style="color:#fff" data-dismiss="modal" ng-click="nuevo()">&times;</button>
+                    </div>
+                    <div id="myModalContentPopUpG" style="font-size:14px; text-align:center">
+                    </div>
+                    <div class='col-sm-12'>
+                        <table width="94%" border="0" align="center" style="font-size:14px">
+                            <tr>
+                                <td align='right' width="50%">Entregado por el cliente:</td>
+                                <td height='5px' align="right" style="padding-right:50px"><input type='text' id="hdfValorEntregado" name="hdfValorEntregado" ng-model="captura.valor_entregado" style=" font-size:14px;text-align:right;font-weight:bold; width:100px;padding:3px" /></td>
+                            </tr>
+                            <tr>
+                                <td align='right' width="50%">Cambio para el cliente:</td>
+                                <td height='5px' align="right" style="padding-right:50px"><b style="color:#bf0020"><!-- ${{ captura.cambio }} --></b></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td align="center">
+                                    <input type="hidden" id="hdfValorLiquidado" ng-model="captura.valor_liquidado" />
+                                    <input type='button' name='action' ng-click='calcular()' value='Calcular cambio' class='btn btn-primary' />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type='button' name='action' data-dismiss="modal" ng-click='volver()' value='Nuevo Remitente' class='btn btn-primary' /></td>
+                                <td align="center">
+                                    <input type='button' name='action' data-dismiss="modal" ng-click='nuevo()' value='Mismo Remitente' class='btn btn-primary' />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" height="10px"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="myModalVarias" class="modal fade" role="dialog" style="visibility:visible;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background:#bf0020; color:#fff; font-size:16px">
+                        <b>Guias multiples</b>
+                        <button type="button" class="close" style="color:#fff" data-dismiss="modal" ng-click="volver()">&times;</button><br />
+                    </div>
+                    <br />
+                    <div id="myModalContentPopUpVarias" style="font-size:14px; text-align:center">
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+
+        <div id="myModalAyuda" class="modal fade" role="dialog" style="visibility:visible;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background:#bf0020; color:#fff; font-size:16px">
+                        <b>Ayuda</b>
+                        <button type="button" class="close" style="color:#fff" data-dismiss="modal">&times;</button><br />
+                    </div>
+                    <br />
+                    <div id="myModalContentAyuda" style="font-size:14px; text-align:center">
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+
+        <div id="myModalCiceg" class="modal fade" role="dialog" style="visibility:visible;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background:#bf0020; color:#fff; font-size:16px">
+                        <b><i>envía y gana</i></b>
+                        <button type="button" class="close" style="color:#fff" data-dismiss="modal">&times;</button><br />
+                    </div>
+                    <div id="myModalContentPopUpCiceg" style="font-size:14px; text-align:center">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

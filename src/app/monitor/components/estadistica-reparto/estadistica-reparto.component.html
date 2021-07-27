@@ -1,0 +1,237 @@
+<form focusInvalidInput [formGroup]="forma" (ngSubmit)="submit()">
+    <div>
+
+        <div class="form-horizontal">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="form-group">
+                        <div class="col-sm-4 input-icons">
+                            <i class="fas fa-list-ol icon"></i>
+                            <select formControlName="drpCuenta" name="drpCuenta" id="drpCuenta" class="input-field" required>
+                                <option value="" selected="selected">--Seleccione--</option>
+                                <option *ngFor="let cuenta of cuentas" value="{{ cuenta.CuentaSin }}"> {{ cuenta.Cuenta }}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2">
+                            <input type="date" formControlName="txtFechaIni" id="txtFechaIni" name="txtFechaIni" required>
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2">
+                            <input type="date" formControlName="txtFechaFin" id="txtFechaFin" name="txtFechaFin" required>
+                        </div>
+
+                        <div class="col-sm-2 input-icons">
+                            <i class="fas fa-box icon"></i>
+                            <select formControlName="drpEmbalaje" id="drpEmbalaje" name="drpEmbalaje" class="input-field" required>
+                            <option value="" selected="selected">--Seleccione embalaje--</option>
+                            <option value="CA">Cajas</option>
+                            <option value="PA">Paquetes</option>
+                            <option value="SO">Sobres</option>
+                            <option value="AM">Ambos</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <div class="radio radio-styled">
+                                <label>
+                                <input type="radio" name="rdTipo" formControlName="rdTipo" value="1">
+                                <span>Como regional origen:</span>
+                            </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 input-icons">
+                            <i class="fas fa-city icon"></i>
+                            <select formControlName="drpRegionalO1" id="drpRegionalO1" name="drpRegionalO1" class="input-field">
+                            <option value="" selected="selected">--Seleccione origen--</option>
+                            <option *ngFor="let option of regionales" value="{{option.Cod_Regional}}">{{option.Nom_Regional}}</option>
+                        </select>
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 input-icons">
+                            <i class="fas fa-city icon"></i>
+                            <select formControlName="drpRegionalD1" id="drpRegionalD1" name="drpRegionalD1" class="input-field">
+                            <option value="" selected="selected">--Seleccione destino--</option>
+                            <option value="999">--Todas--</option>
+                            <option *ngFor="let option of regionales" value="{{option.Cod_Regional}}">{{option.Nom_Regional}}</option>
+                        </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="radio radio-styled">
+                                <label>
+                                <input type="radio" name="rdTipo" formControlName="rdTipo" value="2">
+                                <span>Como regional destino:</span>
+                            </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 input-icons">
+                            <i class="fas fa-city icon"></i>
+                            <select formControlName="drpRegionalD2" id="drpRegionalD2" name="drpRegionalD2" class="input-field">
+                            <option value="" selected="selected">--Seleccione destino--</option>
+                            <option *ngFor="let option of regionales" value="{{option.Cod_Regional}}">{{option.Nom_Regional}}</option>
+                        </select>
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 input-icons">
+                            <i class="fas fa-city icon"></i>
+                            <select formControlName="drpRegionalO2" id="drpRegionalO2" name="drpRegionalO2" class="input-field">
+                            <option value="" selected="selected">--Seleccione origen--</option>
+                            <option value="999">--Todas--</option>
+                            <option *ngFor="let option of regionales" value="{{option.Cod_Regional}}">{{option.Nom_Regional}}</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="submit" name="action" value="Consultar" class="btn btn-primary input-field" />
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="cargando">
+                        <div class="col-sm-12">
+                            <app-loading mensaje="Consultando estadistica"></app-loading>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body" style="width:100%;font-size:11px; overflow: scroll;" *ngIf="estadisticas.length > 0">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table id="tblCola" name="tblCola" class="tabla tabla-hover tabla-bordered" style="width:100%;overflow: scroll;">
+                                <tr style="font-size:11px; font-weight:bold; background-color:#f7f7f7; cursor:pointer" align="center">
+                                    <td>Regional</td>
+                                    <td>Cantidad</td>
+                                    <td><a href="" ng-click="predicate='Entregadas'; reverse=!reverse">Entregadas</a></td>
+                                    <td><a href="" ng-click="predicate='Entregadas_A_Tiempo'; reverse=!reverse">Entregadas a tiempo</a></td>
+                                    <td><a href="" ng-click="predicate='Entregadas_Fuera_Tiempo'; reverse=!reverse">Entregadas fuera de tiempo</a></td>
+                                    <td><a href="" ng-click="predicate='Nov_Colvanes'; reverse=!reverse">Nov X Colvanes</a></td>
+                                    <td><a href="" ng-click="predicate='Nov_Clientes'; reverse=!reverse">Nov X Clientes</a></td>
+                                    <td><a href="" ng-click="predicate='Nov_Otros'; reverse=!reverse">Nov X Otros</a></td>
+                                    <td><a href="" ng-click="predicate='No_Entregadas'; reverse=!reverse">No entregadas</a></td>
+                                    <td><a href="" ng-click="predicate='Nov_Colvanes2'; reverse=!reverse">Nov X Colvanes2</a></td>
+                                    <td><a href="" ng-click="predicate='Nov_Clientes2'; reverse=!reverse">Nov X Clientes2</a></td>
+                                    <td><a href="" ng-click="predicate='Nov_Otros2'; reverse=!reverse">Nov X Otros2</a></td>
+                                    <td><a href="" ng-click="predicate='Eficiencia'; reverse=!reverse">Eficiencia</a></td>
+                                    <td><a href="" ng-click="predicate='Porc_Acido'; reverse=!reverse">% Acido</a></td>
+                                </tr>
+                                <!-- <tr style="font-size:11px; font-weight:bold; font-style:italic; color:#D4001B" align="center" ng-show="estadisticas.length > 0">
+                                    <td>TOTALES:</td>
+                                    <td>{{ total }}</td>
+                                    <td>{{ total_entregadas }}</td>
+                                    <td>{{ total_a_tiempo }}</td>
+                                    <td>{{ total_fuera_tiempo }}</td>
+                                    <td>{{ total_nov_colvanes }}</td>
+                                    <td>{{ total_nov_cliente }}</td>
+                                    <td>{{ total_nov_otras }}</td>
+                                    <td>{{ total_no_entregadas }}</td>
+                                    <td>{{ total_nov_colvanes2 }}</td>
+                                    <td>{{ total_nov_cliente2 }}</td>
+                                    <td>{{ total_nov_otras2 }}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> -->
+                                <tr style="font-size:11px" align="center" *ngFor="let e of estadisticas">
+                                    <td>{{ e.Nom_Regional }}</td>
+                                    <td><a (click)="verDetalleModal(e,'Cantidad')" style="cursor:pointer">{{ e.Cantidad}}</a></td>
+                                    <td><a (click)="verDetalleModal(e,'Entregadas')" style="cursor:pointer">{{ e.Entregadas }}</a></td>
+                                    <td><a (click)="verDetalleModal(e,'Entregadas_A_Tiempo')" style="cursor:pointer">{{ e.Entregadas_A_Tiempo }}</a></td>
+                                    <td><a (click)="verDetalle(e,'Entregadas_Fuera_Tiempo')" style="cursor:pointer">{{ e.Entregadas_Fuera_Tiempo }}</a></td>
+                                    <td><a (click)="verDetalle(e,'Nov_Colvanes')" style="cursor:pointer">{{ e.Nov_Colvanes }}</a></td>
+                                    <td><a (click)="verDetalle(e,'Nov_Clientes')" style="cursor:pointer">{{ e.Nov_Clientes }}</a></td>
+                                    <td><a (click)="verDetalle(e,'Nov_Otros')" style="cursor:pointer">{{ e.Nov_Otros}}</a></td>
+                                    <td style="cursor:pointer"><a (click)="verDetalle(e,'No_Entregadas')"><b>{{ e.No_Entregadas}}</b></a></td>
+                                    <td><a (click)="verDetalle(e,'Nov_Colvanes2')" style="cursor:pointer">{{ e.Nov_Colvanes2 }}</a></td>
+                                    <td><a (click)="verDetalle(e,'Nov_Clientes2')" style="cursor:pointer">{{ e.Nov_Clientes2 }}</a></td>
+                                    <td><a (click)="verDetalle(e,'Nov_Otros2')" style="cursor:pointer">{{ e.Nov_Otros2}}</a></td>
+                                    <td (click)="{success: e.Eficiencia == 100}" style="cursor:pointer">{{ e.Eficiencia | number }}</td>
+                                    <td (click)="{success: e.Porc_Acido == 100}" style="cursor:pointer">{{ e.Porc_Acido | number }}</td>
+                                </tr>
+                                <!-- 
+                                <tr style="font-size:11px; font-weight:bold; font-style:italic; color:#D4001B" align="center" ng-show="estadisticas.length > 0">
+                                    <td>TOTALES:</td>
+                                    <td>{{ total }}</td>
+                                    <td>{{ total_entregadas }}</td>
+                                    <td>{{ total_a_tiempo }}</td>
+                                    <td>{{ total_fuera_tiempo }}</td>
+                                    <td>{{ total_nov_colvanes }}</td>
+                                    <td>{{ total_nov_cliente }}</td>
+                                    <td>{{ total_nov_otras }}</td>
+                                    <td>{{ total_no_entregadas }}</td>
+                                    <td>{{ total_nov_colvanes2 }}</td>
+                                    <td>{{ total_nov_cliente2 }}</td>
+                                    <td>{{ total_nov_otras2 }}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> -->
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- @*Detalle guias*@ -->
+                <div class="panel-body" *ngIf="isDetalle" style="width:100%; height:300px; font-size:11px; overflow: scroll;">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <b style="font-size:14px; color:#D4001B">{{ tituloDetalle | uppercase }} ({{ guias.length }})</b>
+                            <table id="tblCola" name="tblCola" class="tabla tabla-hover tabla-bordered" style="width:2300px;overflow: scroll;">
+                                <tr style="font-size:11px; font-weight:bold; background-color:#f7f7f7" align="center">
+                                    <td>Fecha</td>
+                                    <td>Guía</td>
+                                    <td><a href="" ng-click="predicate='Estado'; reverse=!reverse">Estado</a></td>
+                                    <td>Remitente</td>
+                                    <td><a href="" ng-click="predicate='Dir_Remitente'; reverse=!reverse">Dir Remitente</a></td>
+                                    <td><a href="" ng-click="predicate='Tel_Remitente'; reverse=!reverse">Tel_Remitente</a></td>
+                                    <td><a href="" ng-click="predicate='Nom_CiudadO'; reverse=!reverse">Origen</a></td>
+                                    <td><a href="" ng-click="predicate='Nom_Destinatario'; reverse=!reverse">Destinatario</a></td>
+                                    <td><a href="" ng-click="predicate='Dir_Destinatario'; reverse=!reverse">Dir Destinatario</a></td>
+                                    <td><a href="" ng-click="predicate='Tel_Destinatario'; reverse=!reverse">Tel_Destinatario</a></td>
+                                    <td><a href="" ng-click="predicate='Nom_CiudadD'; reverse=!reverse">Destino</a></td>
+                                    <td><a href="" ng-click="predicate='Nom_Sigla'; reverse=!reverse">Servicio</a></td>
+                                    <td><a href="" ng-click="predicate='Num_Unidades'; reverse=!reverse">Unidades</a></td>
+                                    <td><a href="" ng-click="predicate='PesoReal_K'; reverse=!reverse">Peso</a></td>
+                                    <td>Volumen</td>
+                                    <td>Peso cobrado</td>
+                                    <td>$ Declarado</td>
+                                    <td>$ Flete</td>
+                                    <td>$ C. manejo</td>
+                                    <td>$ Otros</td>
+                                    <td><a href="" ng-click="predicate='Valor_Total'; reverse=!reverse">Total</a></td>
+                                    <td>Dice contener</td>
+                                    <td>Acción Nota guía</td>
+                                    <td>Texto guía</td>
+                                    <td>Usuario</td>
+                                    <td>Cod_Usr_Mod</td>
+                                </tr>
+                                <tr style="font-size:10px" align="center" *ngFor="let g of guias">
+                                    <td>{{ g.Fecha_Captura }}</td>
+                                    <td><a href="../../AplicacionWebPDSIHTML/Guia3.aspx?Guia={{ g.Guia }}&usuario={{ g.Cod_Usr_Mod }}" target="nueva_ventana" style="color:#D4001B">{{ g.Guia }}</a></td>
+                                    <td style="font-size:10px">{{ g.Estado }}</td>
+                                    <td style="font-size:9px">{{ g.Nom_Remitente }}</td>
+                                    <td>{{ g.Dir_Remitente}}</td>
+                                    <td>{{ g.Tel_Remitente }}</td>
+                                    <td>{{ g.Nom_CiudadO }}</td>
+                                    <td>{{ g.Nom_Destinatario }}</td>
+                                    <td>{{ g.Dir_Destinatario}}</td>
+                                    <td>{{ g.Tel_Destinatario}}</td>
+                                    <td>{{ g.Nom_CiudadD }}</td>
+                                    <td><b>{{ g.Nom_Sigla }}</b></td>
+                                    <td>{{ g.Num_Unidades }}</td>
+                                    <td>{{ g.PesoReal_K }}</td>
+                                    <td>{{ g.PesoVolumen_K }}</td>
+                                    <td>{{ g.K_Cobrados }}</td>
+                                    <td>{{ g.Valor_Declarado }}</td>
+                                    <td>{{ g.Valor_Flete }}</td>
+                                    <td>{{ g.Valor_CostoM }}</td>
+                                    <td>{{ g.Valor_Otros }}</td>
+                                    <td>{{ g.Valor_Total }}</td>
+                                    <td>{{ g.Dice_Contener }}</td>
+                                    <td>{{ g.Accion_NotaGuia }}</td>
+                                    <td>{{ g.Texto_Guia }}</td>
+                                    <td>{{ g.Cod_Usuario }}</td>
+                                    <td>{{ g.Cod_Usr_Mod }}</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

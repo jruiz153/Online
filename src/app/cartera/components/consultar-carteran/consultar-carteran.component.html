@@ -1,0 +1,141 @@
+<form [formGroup]="forma">
+    <div class="form-horizontal">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 col-md-2 col-lg-1 control-label">Nit:</label>
+                    <div class="col-sm-4 col-md-4 col-lg-4 input-icons">
+                        <i class="fas fa-receipt icon"></i>
+                        <select name="cuenta" formControlName="drpCuenta" name="drpCuenta" class="input-field" required>
+                            <option value="" selected="selected">--Seleccione--</option>
+                            <option *ngFor="let option of nits" value="{{ option.Num_Cliente }}"> {{ option.Nom_Cliente }}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-3 input-icons">
+                        <i class="fa fa-money-bill icon-button"></i>
+                        <input type="button" (click)="submit()" value="CONSULTAR CARTERA" class="btn btn-primary input-field" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="cargando">
+            <div class="col-sm-12">
+                <app-loading mensaje="Consultando Cartera"></app-loading>
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="cartera.length > 0">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="bs-callout bs-callout-warning" style="background-color:#fff">
+                    <div class=" panel-body" align="center" style="padding:14px">
+                        <b>Cuenta:</b>
+                        <h5>{{ nombreCuenta }}</h5>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="bs-callout bs-callout-danger" style="background-color:#fff">
+                    <div class=" panel-body" align="center" style="padding:14px">
+                        <h2>{{ totalVencidoG | number:'1.0-0' }}</h2>
+                        <b>Vencido</b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="bs-callout bs-callout-info" style="background-color:#fff">
+                    <div class=" panel-body" align="center" style="padding:14px">
+                        <h2>{{ totalNoVencidoG | number:'1.0-0' }}</h2>
+                        <b>No Vencido</b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="bs-callout bs-callout-danger" style="background-color:#fff">
+                    <div class=" panel-body" align="center" style="padding:14px">
+                        <h2>{{ totalMoraG | number:'1.0-0' }}</h2>
+                        <b>En mora</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="cargandoD">
+            <div class="col-sm-12">
+                <app-loading mensaje="Consultando detalle Cartera"></app-loading>
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="registros > 0">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="width:100%; height:100%">
+                        <br />
+                        <h3>Consolidado por Cuentas:</h3>
+                        <table id="tblGuias" name="tblGuias" class="tabla tabla-hover tabla-bordered">
+                            <tr style="font-weight:bold; background-color:#f7f7f7" align="center">
+                                <td>Cuenta</td>
+                                <td>Nombre de Cuenta</td>
+                                <td>Vencido</td>
+                                <td>No Vencido</td>
+                                <td>En Mora</td>
+                            </tr>
+                            <tr *ngFor="let c of cartera" align="center">
+                                <td><a (click)="consultarDetalleCartera(c)" style="color:#DA001B; font-weight:bold; cursor:pointer">{{ c.Cuenta }}</a></td>
+                                <td>{{ c.Nom_Cuenta }}</td>
+                                <td>{{ c.Vencido | number:'1.0-0'}}</td>
+                                <td>{{ c.No_Vencido | number:'1.0-0'}}</td>
+                                <td>{{ c.Mora | number:'1.0-0' }}</td>
+                            </tr>
+                            <tr style="font-weight:bold" align="center">
+                                <td></td>
+                                <td></td>
+                                <td>{{ totalVencidoG | number:'1.0-0'}}</td>
+                                <td>{{ totalNoVencidoG | number:'1.0-0'}}</td>
+                                <td>{{ totalMoraG | number:'1.0-0' }}</td>
+                            </tr>
+                        </table>
+
+                        <br />
+                        <h3 ng-if="detalle_cartera.length > 0">Detalle de Facturas: {{ cuenta }}</h3>
+                        <table id="tblGuias" name="tblGuias" class="tabla tabla-hover tabla-bordered" *ngIf="detalleCartera.length > 0">
+                            <tr style="font-weight:bold; background-color:#f7f7f7" align="center">
+                                <td>Cuenta</td>
+                                <td>Documento</td>
+                                <td>Fecha Vencimiento</td>
+                                <td>Dias Vencido</td>
+                                <td>No Vencido</td>
+                                <td>Vencido</td>
+                                <td>En Mora</td>
+                            </tr>
+                            <tr *ngFor="let d of detalleCartera" align="center">
+                                <td>{{ d.Cuenta }}</td>
+                                <td>{{ d.Documento }}</td>
+                                <td>{{ d.Fec_Vencimiento }}</td>
+                                <td>{{ d.Dias_Vencimiento }}</td>
+                                <td>{{ d.Vencido | number:'1.0-0'}}</td>
+                                <td>{{ d.No_Vencido | number:'1.0-0'}}</td>
+                                <td>{{ d.Mora | number:'1.0-0' }}</td>
+                            </tr>
+                            <tr style="font-weight:bold" align="center">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ totalVencidoGD | number:'1.0-0'}}</td>
+                                <td>{{ totalNoVencidoGD | number:'1.0-0'}}</td>
+                                <td>{{ totalMoraGD | number:'1.0-0'}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="alert alert-danger" ng-if="cotizacion.error">
+            <b style="text-align:center">{{cotizacion.error}}</b>
+        </div> -->
+    </div>
+
+</form>

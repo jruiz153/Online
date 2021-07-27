@@ -1,0 +1,93 @@
+<!-- <div id="sidebar-wrapper">
+    <ul class="sidebar-nav  justify-content-between">
+        <li><a [routerLink]="'/liquidar'" style="cursor: pointer;"> Liquidar envío </a> <span class="fa fa-calculator" style="font-size:12pt;"></span></li>
+        <li><a [routerLink]="'/capturar'" style="cursor: pointer;"> Capturar guías </a> <span class="fa fa-keyboard" style="font-size:12pt;"></span></li>
+        <li><a [routerLink]="'/anular'" style="cursor: pointer;"> Anular guía </a> <span class="fa fa-ban" style="font-size:12pt;"></span></li>
+        <li><a [routerLink]="'/cola'" style="cursor: pointer;"> Cola impresión </a><span class="fa fa-print" style="font-size:12pt;"></span></li>
+        <li><a [routerLink]="'/cartera'" style="cursor: pointer;"> Consultar cartera </a><span class="fa fa-money-bill" style="font-size:12pt;"></span></li>
+        <li><a [routerLink]="'/estadistica'" style="cursor: pointer;"> Estadistica reparto </a><span class="fas fa-chart-area" style="font-size:12pt;"></span></li>
+        <li><a [routerLink]="'/monitor-reparto'" style="cursor: pointer;"> Monitor reparto </a><span class="fas fa-chart-area" style="font-size:12pt;"></span></li>
+        <li><a [routerLink]="'/monitor-recoleccion'" style="cursor: pointer;"> Monitor recoleccion </a><span class="fas fa-chart-area" style="font-size:12pt;"></span></li>
+        <li><a (click)="salir()" style="cursor: pointer;"> Salir </a> <span class="fa fa-lock" style="font-size:12pt;"></span></li>
+    </ul>
+</div> -->
+
+<!-- <mat-nav-list>
+    <div mat-subheader>Generación</div>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-icon mat-list-icon>local_shipping</mat-icon>
+        <div mat-line><a [routerLink]="'/liquidar'">Liquidar envío </a></div>
+    </mat-list-item>
+
+    <mat-list-item>
+        <mat-icon mat-list-icon>local_shipping</mat-icon>
+        <div mat-line><a [routerLink]="'/capturar'">Capturar guía </a></div>
+    </mat-list-item>
+
+    <mat-list-item>
+        <mat-icon mat-list-icon>local_shipping</mat-icon>
+        <div mat-line><a [routerLink]="'/anular'">Anular guía </a></div>
+    </mat-list-item>
+
+    <mat-list-item>
+        <mat-icon mat-list-icon style="color: #D4001B;">local_shipping</mat-icon>
+        <div mat-line><a [routerLink]="'/cola'">Cola impresión </a></div>
+    </mat-list-item>
+
+
+    <mat-list-item>
+        <mat-icon mat-list-icon style="color: #D4001B;">chevron_right</mat-icon>
+        <div mat-line><a [routerLink]="'/cartera'">Consultar cartera </a></div>
+    </mat-list-item>
+
+    <mat-list-item>
+        <mat-icon mat-list-icon>local_shipping</mat-icon>
+        <div mat-line><a [routerLink]="'/estadistica'">Estadistica reparto </a></div>
+    </mat-list-item>
+
+    <mat-list-item>
+        <mat-icon mat-list-icon>local_shipping</mat-icon>
+        <div mat-line><a [routerLink]="'/monitor-reparto'">Monitor reparto </a></div>
+    </mat-list-item>
+
+    <mat-list-item>
+        <mat-icon mat-list-icon>local_shipping</mat-icon>
+        <div mat-line><a [routerLink]="'/monitor-recoleccion'">Monitor recoleccion </a></div>
+    </mat-list-item>
+
+    <mat-divider></mat-divider>
+    <div mat-subheader>Descargue MT</div>
+    <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
+    <div mat-subheader>Seguridad</div>
+    <mat-list-item>
+        <mat-icon mat-list-icon>folder</mat-icon>
+        <div mat-line>
+            <a (click)='logout()'>Salir </a>
+        </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-nav-list> -->
+
+
+
+<mat-accordion multi="false">
+    <mat-expansion-panel class="mat-elevation-z0">
+        <mat-expansion-panel-header class="disable_ripple">
+            <mat-panel-title style="outline: none;">
+                <span class="sidenav-subitems-text mx-2 md align-self-center">Hola</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div onToggleSidenav="" routerLinkActive="activo" routerLink="/liquidar" style="padding: 4px">
+            <span class="fa fa-truck-loading sidenav-subitems-icon" style="font-size:12pt;"></span> &nbsp;
+            <span class="sidenav-subitems-text" style="border-color: blueviolet;">Liquidar envio</span>
+        </div>
+        <div onToggleSidenav="" routerLinkActive="activo" routerLink="/capturar" style="padding: 4px">
+            <span class="fa fa-keyboard sidenav-subitems-icon" style="font-size:12pt;"></span> &nbsp;
+            <span class="sidenav-subitems-text" style="border-color: blueviolet;">Capturar guia</span>
+        </div>
+    </mat-expansion-panel>
+    <mat-divider></mat-divider>
+</mat-accordion>

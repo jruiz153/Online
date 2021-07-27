@@ -1,0 +1,44 @@
+<form focusInvalidInput [formGroup]="forma" (ngSubmit)="anularGuia()">
+    <div class="form-horizontal">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-1 col-md-1 col-lg-1 control-label">Guia:</label>
+                    <div class="col-sm-4 col-md-4 col-lg-2">
+                        <input type="text" id="txtGuia" name="txtGuia" formControlName="txtGuia" maxlength="12" autofocus />
+                    </div>
+                    <label for="inputEmail3" class="col-sm-1 col-md-1 col-lg-1 control-label">Causal:</label>
+                    <div class="col-sm-4 col-md-4 col-lg-2 input-icons">
+                        <i class="fas fa-list icon"></i>
+                        <select id="drpCausal" name="drpCausal" ng-model="causal" class="input-field">
+                        <option value="" selected="selected">--Seleccione--</option>
+                        <option value="NG1">ERROR CAPTURA DE DATOS</option>
+                        <option value="NG2">ERROR TARIFA</option>
+                        <option value="NG3">ERROR EN EL SERVICIO</option>
+                        <option value="NG4">NO ACEPTACION DEL SERVICIO POR EL CLIENTE</option>
+                    </select>
+                    </div>
+                    <div class="col-sm-2 col-md-2 col-lg-2 input-icons">
+                        <i class="fas fa-ban icon-button"></i>
+                        <input type="button" name="action" value="Anular" class="btn btn-primary input-field" ng-click="anularGuia()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="isAnulando">
+            <div class="col-sm-12">
+                <app-loading mensaje="Anulando guía"></app-loading>
+            </div>
+        </div>
+        <div class="bs-callout bs-callout-danger" style="width:100%;background-color:#fff">
+            <div class="panel-body">
+                <p><b>Atencion</b>, recuerde que para anular una guia esta debe:</p>
+                <ul>
+                    <li>Estar en estado producida.</li>
+                    <li>No ser capturada en dias anteriores.</li>
+                    <li>Debe ser anulada por el usuario que la capturo.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>

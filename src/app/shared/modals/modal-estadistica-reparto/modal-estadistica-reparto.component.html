@@ -1,0 +1,77 @@
+<div>
+    <mat-icon class="pull-right close-icon" (click)="onCloseDialog()">X</mat-icon>
+</div>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-tab-group #matgroup>
+        <mat-tab label="Guías {{ titulo }} ( {{ guias.length }})">
+            <div class="tab-content">
+                <div class="content-container tab-content-height" style="height:330px;overflow: scroll;">
+
+                    <table id="tblCola" name="tblCola" class="tabla tabla-hover tabla-bordered" style="width:2300px; height:100px;overflow: scroll;">
+                        <tr style="font-size:8px; font-weight:bold; background-color:#f7f7f7" align="center">
+                            <td>Fecha</td>
+                            <td>Guía</td>
+                            <td>Estado</td>
+                            <td>Remitente</td>
+                            <td>Dir Remitente</td>
+                            <td>Tel_Remitente</td>
+                            <td>Origen</td>
+                            <td>Destinatario</td>
+                            <td>Dir Destinatario</td>
+                            <td>Tel_Destinatario</td>
+                            <td>Destino</td>
+                            <td>Servicio</td>
+                            <td>Unidades</td>
+                            <td>Peso</td>
+                            <td>Volumen</td>
+                            <td>Peso cobrado</td>
+                            <td>$ Declarado</td>
+                            <td>$ Flete</td>
+                            <td>$ C. manejo</td>
+                            <td>$ Otros</td>
+                            <td><a href="" ng-click="predicate='Valor_Total'; reverse=!reverse">Total</a></td>
+                            <td>Dice contener</td>
+                            <td>Acción Nota guía</td>
+                            <td>Texto guía</td>
+                            <td>Usuario</td>
+                            <td>Cod_Usr_Mod</td>
+                        </tr>
+                        <tr style="font-size:8px" align="center" *ngFor="let g of guias">
+                            <td>{{ g.Fecha_Captura }}</td>
+                            <td><a href="../../AplicacionWebPDSIHTML/Guia3.aspx?Guia={{ g.Guia }}&usuario={{ g.Cod_Usr_Mod }}" target="nueva_ventana" style="color:#D4001B">{{ g.Guia }}</a></td>
+                            <td>{{ g.Estado }}</td>
+                            <td>{{ g.Nom_Remitente }}</td>
+                            <td>{{ g.Dir_Remitente}}</td>
+                            <td>{{ g.Tel_Remitente }}</td>
+                            <td>{{ g.Nom_CiudadO }}</td>
+                            <td>{{ g.Nom_Destinatario }}</td>
+                            <td>{{ g.Dir_Destinatario}}</td>
+                            <td>{{ g.Tel_Destinatario}}</td>
+                            <td>{{ g.Nom_CiudadD }}</td>
+                            <td><b>{{ g.Nom_Sigla }}</b></td>
+                            <td>{{ g.Num_Unidades }}</td>
+                            <td>{{ g.PesoReal_K }}</td>
+                            <td>{{ g.PesoVolumen_K }}</td>
+                            <td>{{ g.K_Cobrados }}</td>
+                            <td>{{ g.Valor_Declarado }}</td>
+                            <td>{{ g.Valor_Flete }}</td>
+                            <td>{{ g.Valor_CostoM }}</td>
+                            <td>{{ g.Valor_Otros }}</td>
+                            <td>{{ g.Valor_Total }}</td>
+                            <td>{{ g.Dice_Contener }}</td>
+                            <td>{{ g.Accion_NotaGuia }}</td>
+                            <td>{{ g.Texto_Guia }}</td>
+                            <td>{{ g.Cod_Usuario }}</td>
+                            <td>{{ g.Cod_Usr_Mod }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Descripcion">
+            <div class="tab-content">
+                <p>Hola descripcion</p>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</form>

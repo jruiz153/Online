@@ -1,0 +1,22 @@
+<!-- <div class="row" style="padding-left:15px" *ngIf="tools.visible">
+    <div class="col-sm-12 navbar" style="background-color:#fff; padding:6px; border-bottom: 1px solid #E4E4E4">
+        <span class="nav-brand"><a href="#" id="menu-toggle"><span class="fa fa-bars" style="color:#6a6a6a; font-size:20px"></span></a>
+        </span>
+        <span class="nav-brand">
+            <b style="font-size:16px; padding: 5px;"> {{ nb.opcion | uppercase}} estado: {{ tools.visible }}</b> 
+        </span>
+        <span class="navbar-brand navbar-right" style="font-size:13px"><b>{{ auth.nombre }} - {{ auth.cliente }}</b></span>
+    </div>
+</div> -->
+
+
+<mat-toolbar *ngIf="tools.estado_navbar" style="border-bottom: 1px solid #ddd;">
+    <button mat-icon-button>
+        <mat-icon mat-icon-button (click)="onabrirPanelDerecha()">search</mat-icon>
+    </button>
+    <span style="font-size: 16px;">{{ nb.tituloOpcion | uppercase }}</span>
+    <span class="example-spacer"></span>
+    <span class="navbar-brand navbar-right" style="font-size:12px; text-align: right;">
+        {{ auth.cliente | uppercase }} {{ auth.contacto | uppercase }}
+    </span>
+</mat-toolbar>
